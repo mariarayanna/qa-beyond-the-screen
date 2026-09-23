@@ -1,50 +1,50 @@
 # 🚀 QA Beyond the Screen - Advanced Software Quality Engineering
 
-Bem-vindo ao repositório **QA Beyond the Screen**! Este projeto foi desenvolvido por Maria Rayanna para demonstrar a esteira completa de engenharia e garantia de qualidade (QA), indo além dos testes manuais funcionais para explorar **Performance, Segurança (DAST), APIs e Estratégia de Testes**.
+[![Security DAST Pipeline](https://github.com/mariarayanna/qa-beyond-the-screen/actions/workflows/security-pipeline.yml/badge.svg)](https://github.com/mariarayanna/qa-beyond-the-screen/actions/workflows/security-pipeline.yml)
+
+Bem-vindo ao repositório **QA Beyond the Screen**! Este projeto foi desenvolvido por Maria Rayanna para demonstrar a esteira completa de engenharia e garantia de qualidade (QA), indo além dos testes manuais funcionais para explorar Performance, Segurança (DAST), CI/CD, APIs e Estratégia de Testes.
 
 ---
 
-## 📁 Estrutura do Repositório
+## 📌 Visão Geral da Estrutura de Testes
 
-```text
-qa-beyond-the-screen/
-│
-├── 01-manual-and-exploratory/      # Estratégia de testes manuais, casos de teste e cenários BDD
-├── 02-api-testing-postman/          # Suíte de testes de API REST e validações de contrato
-├── 03-database-sql/                 # Validações de integridade de dados via SQL
-├── 04-automation-multitool/         # Automação E2E (Cypress, Playwright e Robot Framework)
-├── 05-performance-k6/               # Testes de Carga, Estresse e SLA com k6
-│   └── performance-reports/         # Relatórios e evidências do k6 (JSON e HTML Interativo)
-├── 06-security-dast/                # Testes de Segurança Dinâmicos (SQL Injection e XSS)
-└── 07-qa-strategies/                # Estratégia e Governança de Testes (Smoke, Sanity, UAT)
-```
----
-
-## 🛠️ Tecnologias e Ferramentas
-
-* **Aplicação em Teste:** OWASP Juice Shop (Ambiente Dockerizado)
-* **Performance:** Grafana k6 (JavaScript) & k6-reporter
-* **Infraestrutura:** Docker / VS Code
-* **Gestão Ágil:** Trello (Kanban)
-* **Versionamento:** Git & GitHub
+| Módulo | Tipo de Teste | Ferramenta / Tech | Status / Evidência |
+| :--- | :--- | :--- | :--- |
+| **01** | Manual & Exploratório | Markdown / Trello | ⏳ Planejado |
+| **02** | Testes de API | Postman / Newman | ⏳ Planejado |
+| **03** | Banco de Dados & SQL | SQLite / DBeaver | ⏳ Planejado |
+| **04** | Automação Web / API | Cypress / Playwright | ⏳ Planejado |
+| **05** | Performance & Carga | k6 (JavaScript) | ✅ `load-test.js` (Relatórios JSON/HTML) |
+| **06** | Segurança Dinâmica (DAST) | k6 / Docker / OWASP ZAP | ✅ `sqli-test.js` & `security-dast-tests.md` |
+| **07** | Estratégia & Planos de Teste | BDD / Mapas Mentais | ⏳ Planejado |
 
 ---
 
-## 📌 Gestão de Testes, Rastreabilidade & Fluxo Kanban (Trello)
+## ⚙️ Esteira DevSecOps & CI/CD (GitHub Actions)
 
-A governança deste projeto e o acompanhamento do ciclo de vida das falhas seguem o fluxo Kanban em uma esteira ágil de desenvolvimento. 
+O projeto conta com uma pipeline automatizada de **Segurança Dinâmica (DAST)** configurada em `.github/workflows/security-pipeline.yml`. A cada novo `push` ou `pull_request` na branch `main`:
 
-* 🔗 **Quadro Oficial do Projeto:** 
-[Acessar Board no Trello - QA Beyond the Screen]
-(https://trello.com/invite/b/6ab3f2311c4c9dc1ada4b55f/ATTI37026504c7fb24f0f6706eac439eef13FF1579DA/mray-qa-beyond-the-screen)
+1. Um container Docker com a aplicação **OWASP Juice Shop** é provisionado no ambiente do GitHub Actions.
+2. O runner do **k6** executa o script de segurança `06-security-dast/sqli-test.js`.
+3. O resultado da chamada HTTP é validado contra padrões de vulnerabilidade (ex: verificação do bypass de autenticação por SQL Injection).
 
-### 📊 Fluxo da Esteira e Rastreabilidade de Bugs
+---
 
-```text
-[ Product Backlog ] ➔ [ To Do ] ➔ [ In Progress ] ➔ [ Code Review ] 
-                                                            │
-[ Done ] ⇇ [ Client Review ] ⇇ [ In Testing ] ⇇ [ Ready for Testing ]
-                                       │
-                                (Gargalo/Bug)
-                                       ↓
-                             [ Card de Bug criado em To Do ]
+## 📋 Gestão Ágil e Acompanhamento
+
+Todo o fluxo de desenvolvimento de casos de teste, automações e registros de bugs é gerenciado publicamente no Trello:
+
+* 📌 **Board no Trello:** [Acessar Quadro do Projeto](https://trello.com) *(Substitua pelo seu link público do Trello)*
+
+---
+
+## 🚀 Como Executar os Testes Localmente
+
+### Pré-requisitos
+* Node.js instalado
+* Docker instalado e em execução
+* k6 instalado
+
+### 1. Subir a Aplicação Alvo (OWASP Juice Shop)
+```bash
+docker run -d -p 3000:3000 bkimminich/juice-shop
