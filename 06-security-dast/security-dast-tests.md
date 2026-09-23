@@ -26,3 +26,21 @@ A aplicação não realiza a higienização adequada das entradas do usuário no
 Resultado Esperado (Seguro): A aplicação deve recusar a autenticação, sanitizar a entrada e retornar um erro HTTP 401 Unauthorized.
 
 Resultado Obtido (Vulnerável): A aplicação autentica o usuário com sucesso como admin@juice-sh.op e retorna um token JWT de sessão na resposta da API.
+---
+
+## 📌 Teste 02: Cross-Site Scripting Refletido (XSS)
+
+* **Vulnerabilidade:** A03:2021 – Injection / Cross-Site Scripting (XSS)
+* **Severidade:** 🟠 Média / Alta (CVSS 6.1)
+* **Vetor de Ataque:** Campo de Busca de Produtos (`GET /rest/products/search?q=`)
+* **Ferramenta de Diagnóstico:** Navegador / Burp Suite
+
+### 📋 Descrição do Cenário
+A barra de pesquisa da aplicação reflete o termo pesquisado na interface do usuário sem sanitizar os caracteres especiais de HTML/JavaScript. Isso permite que um atacante injete código malicioso que é executado no contexto do navegador de quem visualizar a página.
+
+### 🧪 Steps to Reproduce (Passos para Reprodução)
+1. Acessar a página principal da aplicação (`http://localhost:3000/#/`).
+2. Clicar no ícone de pesquisa (lupa) no canto superior direito.
+3. Inserir o seguinte payload no campo de pesquisa:
+   ```html
+   <iframe src="javascript:alert('XSS')">
