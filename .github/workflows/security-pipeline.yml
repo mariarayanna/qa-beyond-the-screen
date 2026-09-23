@@ -1,0 +1,26 @@
+name: 🛡️ Security DAST Pipeline (k6 & OWASP)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  dast-security-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: 2. Subir OWASP Juice Shop via Docker
+        run: |
+          docker run -d -p 3000:3000 bkimminich/juice-shop
+          sleep 10 # Aguarda a aplicação inicializar na porta 3000
+
+      - name: 3. Executar Teste DAST de SQL Injection com k6
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: 06-security-dast/sqli-test.js
+        continue-on-error: true # Permite que a pipeline finalize exibindo a falha detectada
